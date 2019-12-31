@@ -1,0 +1,8 @@
+name: WallSystem
+main: tim03we.wallsystem.WallSystem
+api: 1.0.9
+version: 1.0.0
+author: tim03we
+description: A NukkitX Plugin
+depend:
+  - PlotSquared
