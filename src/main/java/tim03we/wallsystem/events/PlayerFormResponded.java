@@ -21,25 +21,27 @@ public class PlayerFormResponded implements Listener {
             }
             FormWindowSimple gui = (FormWindowSimple) event.getWindow();
             String responseName = gui.getResponse().getClickedButton().getText();
-            Plot plot = Plot.getPlot(new Location(player.getLevel().getName(), player.getFloorX(), player.getFloorY(), player.getFloorZ()));
-            if (plot == null) {
-                player.sendMessage(WallSystem.prefix + WallSystem.getInstance().getConfig().getString("messages.not-on-the-plot"));
-                return;
-            }
-            if (!plot.isOwner(NukkitUtil.getPlayer(player).getUUID())) {
-                player.sendMessage(WallSystem.prefix + WallSystem.getInstance().getConfig().getString("messages.not-the-owner"));
-                return;
-            }
-            for (String list : WallSystem.walls) {
-                String[] ex = list.split(":");
-                if(ex[0].equals(responseName)) {
-                    if(!ex[3].equals("none")) {
-                        if (!player.hasPermission(ex[3])) {
-                            player.sendMessage(WallSystem.prefix + WallSystem.getInstance().getConfig().getString("messages.no-perms"));
-                            return;
+            if(WallSystem.getInstance().getConfig().getString("form.title").equals(gui.getTitle())) {
+                Plot plot = Plot.getPlot(new Location(player.getLevel().getName(), player.getFloorX(), player.getFloorY(), player.getFloorZ()));
+                if (plot == null) {
+                    player.sendMessage(WallSystem.prefix + WallSystem.getInstance().getConfig().getString("messages.not-on-the-plot"));
+                    return;
+                }
+                if (!plot.isOwner(NukkitUtil.getPlayer(player).getUUID())) {
+                    player.sendMessage(WallSystem.prefix + WallSystem.getInstance().getConfig().getString("messages.not-the-owner"));
+                    return;
+                }
+                for (String list : WallSystem.walls) {
+                    String[] ex = list.split(":");
+                    if(ex[0].equals(responseName)) {
+                        if(!ex[3].equals("none")) {
+                            if (!player.hasPermission(ex[3])) {
+                                player.sendMessage(WallSystem.prefix + WallSystem.getInstance().getConfig().getString("messages.no-perms"));
+                                return;
+                            }
                         }
+                        WallSystem.setWall(player, ex[1] + ":" + ex[2], plot);
                     }
-                    WallSystem.setWall(player, ex[1] + ":" + ex[2], plot);
                 }
             }
         }
